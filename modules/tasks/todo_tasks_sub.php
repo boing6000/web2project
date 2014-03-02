@@ -116,28 +116,17 @@ if (0 == count($fields)) {
     $fields = array_combine($fieldList, $fieldNames);
 }
 $fieldNames = array_values($fields);
-?>
-<form name="form" method="post" action="index.php?<?php echo "m=$m&amp;a=$a&amp;date=$date"; ?>" accept-charset="utf-8">
-    <table class="tbl list">
-        <?php
-        $s  = '<tr>';
-        $s .= str_repeat('<th></th>', 3);
-        foreach ($fieldNames as $index => $name) {
-            $s .= '<th>' . $AppUI->_($fieldNames[$index]) . '</th>';
-        }
-        $s .= '</tr>';
-        echo $s;
 
-        $listTable = new w2p_Output_HTML_TaskTable($AppUI);
-        $listTable->df .= ' ' . $AppUI->getPref('TIMEFORMAT');
-        $listTable->addBefore('edit', 'task_id');
-        $listTable->addBefore('pin', 'task_id');
-        $listTable->addBefore('log', 'task_id');
+$listTable = new w2p_Output_HTML_TaskTable($AppUI);
+$listTable->df .= ' ' . $AppUI->getPref('TIMEFORMAT');
 
-        $listTable->buildHeader($fields);
-        echo $listTable->buildRows($tasks, array());
-        ?>
-    </table>
-</form>
-<?php
+$listTable->addBefore('edit', 'task_id');
+$listTable->addBefore('pin', 'task_id');
+$listTable->addBefore('log', 'task_id');
+
+echo $listTable->startTable();
+echo $listTable->buildHeader($fields);
+echo $listTable->buildRows($tasks, array());
+echo $listTable->endTable();
+
 include $AppUI->getTheme()->resolveTemplate('task_key');
