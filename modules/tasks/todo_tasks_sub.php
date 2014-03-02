@@ -128,7 +128,7 @@ $fieldNames = array_values($fields);
         $s .= '</tr>';
         echo $s;
 
-        $listTable = new w2p_Output_ListTable($AppUI);
+        $listTable = new w2p_Output_HTML_TaskTable($AppUI);
         $listTable->df .= ' ' . $AppUI->getPref('TIMEFORMAT');
         $listTable->addBefore('edit', 'task_id');
         $listTable->addBefore('pin', 'task_id');
