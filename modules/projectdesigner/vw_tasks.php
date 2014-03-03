@@ -27,31 +27,8 @@ $history_active = !empty($mods['history']) && canView('history');
 */
 $task_id = (int) w2PgetParam($_GET, 'task_id', 0);
 
-$q = new w2p_Database_Query;
 $pinned_only = (int) w2PgetParam($_GET, 'pinned', 0);
-if (isset($_GET['pin'])) {
-	$pin = (int) w2PgetParam($_GET, 'pin', 0);
-	$msg = '';
-
-	// load the record data
-	if ($pin) {
-		$q->addTable('user_task_pin');
-		$q->addInsert('user_id', $AppUI->user_id);
-		$q->addInsert('task_id', $task_id);
-	} else {
-		$q->setDelete('user_task_pin');
-		$q->addWhere('user_id = ' . (int)$AppUI->user_id);
-		$q->addWhere('task_id = ' . (int)$task_id);
-	}
-
-	if (!$q->exec()) {
-		$AppUI->setMsg('ins/del err', UI_MSG_ERROR, true);
-	} else {
-		$q->clear();
-	}
-
-	$AppUI->redirect('', -1);
-}
+__extract_from_tasks_pinning($AppUI, $task_id);
 
 $durnTypes = w2PgetSysVal('TaskDurationType');
 $taskPriority = w2PgetSysVal('TaskPriority');
@@ -74,6 +51,7 @@ $project = new CProject;
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'projects.project_id');
 $working_hours = ($w2Pconfig['daily_working_hours'] ? $w2Pconfig['daily_working_hours'] : 8);
 
+$q = new w2p_Database_Query;
 $q->addQuery('projects.project_id, project_color_identifier, project_name');
 $q->addQuery('SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ' . $working_hours . ', task_duration_type)) / SUM(task_duration * IF(task_duration_type = 24, ' . $working_hours . ', task_duration_type)) AS project_percent_complete');
 $q->addQuery('company_name');

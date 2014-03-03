@@ -5932,3 +5932,28 @@ function __extract_from_tasks6($q, $history_active)
 
     return $q;
 }
+
+/**
+ * @param $AppUI
+ * @param $task_id
+ */
+function __extract_from_tasks_pinning($AppUI, $task_id)
+{
+    if (isset($_GET['pin'])) {
+        $pin = (int)w2PgetParam($_GET, 'pin', 0);
+        $msg = '';
+
+        $task = new CTask();
+        // load the record data
+        if ($pin) {
+            $result = $task->pinTask($AppUI->user_id, $task_id);
+        } else {
+            $result = $task->unpinTask($AppUI->user_id, $task_id);
+        }
+
+        if (!$result) {
+            $AppUI->setMsg('Pinning ', UI_MSG_ERROR, true);
+        }
+        $AppUI->redirect('', -1);
+    }
+}
