@@ -449,11 +449,6 @@ function __extract_from_showtask(&$arr, $level, $today_view, $listTable)
     $s .= $listTable->createCell('task_start_datetime', $arr['task_start_date']);
     $s .= $listTable->createCell('task_duration', $arr['task_duration'] . ' ' . mb_substr($AppUI->_($durnTypes[$arr['task_duration_type']]), 0, 1));
     $s .= $listTable->createCell('task_end_datetime', $arr['task_end_date']);
-    if ($today_view) {
-        $s .= $listTable->createCell('task_due_in', $arr['task_due_in']);
-    } elseif ($history_active) {
-        $s .= $listTable->createCell('last_update', $arr['last_update']);
-    }
 
     // Assignment checkbox
     if ('projectdesigner' == $m) {
