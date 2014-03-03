@@ -218,7 +218,7 @@ $listTable->addBefore('log', 'task_id');
         for ($i = 0; $i < $tnums; $i++) {
             $t = $p['tasks'][$i];
             if ($t['task_parent'] == $t['task_id']) {
-                echo showtask_new($t, 0);
+                echo showtask_new($t, 0, false, $listTable);
                 findchild_new($p['tasks'], $t['task_id']);
             }
         }
